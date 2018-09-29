@@ -1,0 +1,92 @@
+<html >
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="todocss.css" />
+    <script>
+    var app = angular.module("myApp", []);
+    app.controller( "TodoCtrl",function($scope) {
+                $scope.formTodoText="";
+                $scope.formTodoDescription="";
+              $scope.todos = [
+                {"text":'SDC',"description":"Software Development Cell", "done":false},         
+                {"text": 'Project',"description":"ToDo-List Using Angular Js 1.6x", "done":false}
+              ];
+              
+              $scope.getTotalTodos = function () {
+                return $scope.todos.length;
+              }
+              
+              
+              $scope.addTodo = function () {
+              if($scope.formTodoText==""||$scope.formTodoDescription=="")
+              { 
+                alert("Title or Description field cannot be left blank");
+              }
+              else{
+                $scope.todos.push({text:$scope.formTodoText,description:$scope.formTodoDescription, done:false});
+                $scope.formTodoText = '';
+                $scope.formTodoDescription='';
+                }
+              }
+              
+                $scope.clearCompleted = function () {
+                    
+                    $scope.todos = $scope.todos.filter(function(todo){
+                       return !todo.done;
+                  
+                    });
+                }
+                $scope.desc=function(todoObject)
+                {
+                    var modal = document.getElementById('myModal');
+
+
+                var btn = document.getElementById("myBtn");
+
+                modal.style.display="block";
+                $scope.x=todoObject.description;
+                }
+                $scope.close=function()
+                {
+                    var modal = document.getElementById('myModal');
+
+            var span = document.getElementsByClassName("close")[0];
+                            modal.style.display="none";
+                            
+                            
+                }
+                
+    });
+</script>
+
+  </head>
+  
+  <body ng-app="myApp" ng-controller="TodoCtrl">
+    <div class="todo-wrapper" >
+     <div > <h2 style="background: #f4b042;width: 40%;  transform: translate(50%,0);"><span class="big">{{getTotalTodos()}}</span> <br />Things to do</h2></div>
+      <ul>
+        <li ng-repeat="todo in todos">
+          <input type="checkbox" ng-model="todo.done"/>
+          <span ng-click="desc(todo)" class="done-{{todo.done}}">{{todo.text}}</span>
+          <div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span ng-click="close(todo.text)"class="close">&times;</span>
+    <p>{{x}}</p>
+  </div>
+
+</div>
+        </li>
+      </ul>
+      <form>
+        <input style="border: 2px solid black;"class="add-input" placeholder="Title" type="text" ng-model="formTodoText"value="" />
+        <input style="border: 2px solid black;"class="add-input" placeholder="Description" type="text" ng-model="formTodoDescription" />
+        <button class="add-btn" ng-click="addTodo()"><h2>Add</h2></button>
+      </form>
+      
+      <button class="clear-btn" ng-click="clearCompleted()">Clear completed</button>
+    </div>
+  </body>
+  
+</html>
